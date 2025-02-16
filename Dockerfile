@@ -17,4 +17,4 @@ COPY . .
 RUN npx playwright install --with-deps
 
 # Command to run tests
-CMD ["npm", "run", "test:goodstack"] 
+CMD ["npm", "run", "test"]
