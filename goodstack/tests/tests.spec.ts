@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { GoodstackPage } from "../pages/base.page";
+import { BasePage } from "../pages/base.page";
 
 test.describe("Navigate to Donations page", () => {
   test("should navigate to the donations page and verify the page", async ({
     page,
   }) => {
-    const homePage = new GoodstackPage(page);
+    const homePage = new BasePage(page);
     await homePage.visit();
 
     //Navigate to the donations page

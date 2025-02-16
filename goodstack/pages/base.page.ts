@@ -1,26 +1,20 @@
 import { Page, expect } from "@playwright/test";
 
-export class GoodstackPage {
+export class BasePage {
   page: Page;
-  requestsSent: Request[] = [];
-
   url: string;
 
-  constructor(page: Page) {
+  constructor(page: Page, url: string = "https://goodstack.io") {
     this.page = page;
-    this.url = "https://goodstack.io";
+    this.url = url;
   }
 
-  // INFO: LOCATORS
+  // INFO: GLOBAL LOCATORS
   menuElements = {
     root: () => this.page.locator("nav"),
     subMenuHeaderButton: (text: string) =>
       this.menuElements.root().locator("button").filter({ hasText: text }),
     headerLink: (text: string) =>
-      this.menuElements.root().locator("li a").filter({ hasText: text }),
-    getStartedButton: () =>
-      this.page.locator("button").filter({ hasText: "Get started" }),
-    subMenuElement: (text: string) =>
       this.menuElements.root().locator("li a").filter({ hasText: text }),
   };
 
@@ -30,9 +24,10 @@ export class GoodstackPage {
       this.footerElements.root().locator("a").filter({ hasText: text }),
   };
 
-  // INFO: ACTIONS
-  public async visit(url?: string): Promise<any> {
-    return this.page.goto(this.url, { waitUntil: "networkidle" });
+  // INFO: GLOBAL ACTIONS
+  async visit(url?: string): Promise<void> {
+    const targetUrl = url || this.url;
+    await this.page.goto(targetUrl, { waitUntil: "networkidle" });
   }
 
   async clickMenuItem(menuItem: string) {
@@ -40,12 +35,7 @@ export class GoodstackPage {
       .headerLink(menuItem)
       .getAttribute("href");
     await this.menuElements.headerLink(menuItem).click();
-
     return href;
-  }
-
-  getFooterLinkHref(footerLink: string) {
-    return this.footerElements.footerLink(footerLink).getAttribute("href");
   }
 
   async clickFooterLink(footerLink: string) {
@@ -53,31 +43,14 @@ export class GoodstackPage {
       .footerLink(footerLink)
       .getAttribute("href");
     await this.footerElements.footerLink(footerLink).click();
-
     return href;
   }
 
   async waitForRedirectToUrl(url: string) {
-    let currentUrl = this.page.url();
     let retries = 5;
-
-    while (retries-- > 0 && !currentUrl.includes(url)) {
+    while (retries-- > 0 && !this.page.url().includes(url)) {
       await this.page.waitForTimeout(2000);
-      currentUrl = this.page.url();
     }
-
-    expect(currentUrl).toContain(url);
-    await this.page.waitForTimeout(2000); // Ensure no redirects are happening
-    expect(currentUrl).toContain(url);
+    expect(this.page.url()).toContain(url);
   }
-
-  // async clickSubMenuElement(parent: string, subMenuElement: string) {
-  //   await this.menuElements.subMenuHeaderButton(parent).click()
-  //   const href = await this.menuElements
-  //     .subMenuElement(subMenuElement)
-  //     .getAttribute('href')
-  //   await this.menuElements.subMenuElement(subMenuElement).click()
-
-  //   return href
-  // }
 }
