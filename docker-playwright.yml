@@ -1,5 +1,6 @@
 name: Playwright Tests in Docker
 # Added this to show how we can run the tests in docker container. Kept the file outside of .github on purpose
+on:
   push:
     branches: [main, master]
   pull_request:
@@ -27,4 +28,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 3
-          
