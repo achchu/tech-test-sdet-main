@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "playwright test",
     "test:goodstack": "playwright test --config=./goodstack/playwright.config.ts",
     "test:newsite": "playwright test tests/wikipedia.spec.ts"
   },
