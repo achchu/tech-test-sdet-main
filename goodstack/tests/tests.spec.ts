@@ -1,32 +1,27 @@
 import { expect, test } from "@playwright/test";
-import { Page } from "playwright";
-import { Logger } from "@playwright/test";
 import { GoodstackPage } from "../pages/base.page";
 
-test.describe("execute", () => {
-  test(`test`, async ({ page }) => {
-    let homePage = new GoodstackPage(page);
+test.describe("Navigate to Donations page", () => {
+  test("should navigate to the donations page and verify the page", async ({
+    page,
+  }) => {
+    const homePage = new GoodstackPage(page);
     await homePage.visit();
 
-    await page
-      .locator("nav")
-      .locator("button")
-      .filter({ hasText: "Produts" })
-      .click();
-    await page
-      .locator("nav")
-      .locator("li a")
-      .filter({ hasText: "Donations" })
-      .click();
+    //Navigate to the donations page
+    await page.locator("nav button:has-text('Products')").click();
+    await page.locator("nav li a:has-text('Donations')").click();
 
-    await page.waitForTimeout(1000);
+    //Wait for URL confirmation instead of using timeout
+    await expect(page).toHaveURL(/donations/);
 
-    const element = await page
-      .locator("h2")
-      .filter({ hasText: "Track and manage everything a one place" });
+    // Validate the heading's visibility
+    const heading = page.locator("h2:has-text('Track and manage everything')");
+    await expect(heading).toBeVisible();
 
-    expect(await element.isVisible()).toBeTruthy();
-
-    await page.screenshot({ path: "screenshot.png" });
+    // Take a screenshot of the page. Using timestamp to avoid overwriting existing screenshots
+    // Could have used UUID instead of timestamp but i didn't want add an extra dependency and this is simple and is readable
+    const timestamp = new Date().toISOString().replace(/[-:Z]/g, "");
+    await page.screenshot({ path: `screenshots/donations-${timestamp}.png` });
   });
 });
