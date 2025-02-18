@@ -32,7 +32,9 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright Tests (Sharded)
-        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        run: |
+          mkdir -p blob-report
+          npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --reporter=blob
 
       - name: Upload Blob Report for Merging
         if: always() # Ensure reports are uploaded even if tests fail
