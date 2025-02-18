@@ -1,5 +1,4 @@
 name: Playwright Tests
-
 on:
   push:
     branches: [main, master]
@@ -7,33 +6,72 @@ on:
     branches: [main, master]
 
 jobs:
-  test:
+  # Step 1: Run Playwright Tests in Parallel (4 Shards)
+  playwright-tests:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4] # Defined 4 parallel test jobs
+        browser: [chromium, firefox, webkit]
+        shardTotal: [4] # Total number of shards
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run All Playwright Tests
-        run: npm run test
+      - name: Run Playwright Tests (Sharded)
+        run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
-      # Upload test report only if tests fail
-      - name: Upload Playwright Test Report (if failed)
-        if: failure()
+      - name: Upload Blob Report for Merging
+        if: always() # Ensure reports are uploaded even if tests fail
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report/
+          retention-days: 2
+
+  # Step 2: Merge Reports After All Shards Complete
+  merge-reports:
+    needs: [playwright-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Download All Blob Reports
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge Reports into HTML
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload Final HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged-html-report
           path: playwright-report/
-          retention-days: 3
+          retention-days: 14

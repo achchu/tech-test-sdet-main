@@ -1,13 +1,7 @@
 import { Page, expect } from "@playwright/test";
 
 export class BasePage {
-  page: Page;
-  url: string;
-
-  constructor(page: Page, url: string = "https://goodstack.io") {
-    this.page = page;
-    this.url = url;
-  }
+  constructor(protected page: Page) {}
 
   // INFO: GLOBAL LOCATORS
   menuElements = {
@@ -25,9 +19,9 @@ export class BasePage {
   };
 
   // INFO: GLOBAL ACTIONS
-  async visit(url?: string): Promise<void> {
-    const targetUrl = url || this.url;
-    await this.page.goto(targetUrl, { waitUntil: "networkidle" });
+  async visit(path: string = "/"): Promise<void> {
+    const url = process.env.BASE_URL || "https://goodstack.io";
+    await this.page.goto(`${url}${path}`);
   }
 
   async clickMenuItem(menuItem: string) {

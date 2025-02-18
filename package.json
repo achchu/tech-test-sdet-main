@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
-    "test:goodstack": "playwright test --config=./goodstack/playwright.config.ts",
-    "test:newsite": "playwright test tests/wikipedia.spec.ts"
+    "test:goodstack": "playwright test --config=./goodstack/config/playwright.config.ts",
+    "test:newsite": "playwright test tests/wikipedia.spec.ts",
+    "test:ci-local": "playwright test --reporter=blob && playwright merge-reports ./blob-report --reporter html && playwright show-report"
   },
   "author": "",
   "license": "ISC",
