@@ -1,6 +1,6 @@
 ## Note
 
-Below are the details of a task that I was asked to carry out. I've done this project using playwright and I've done a write up for the task and the changes and my thinking here - https://achchu.notion.site/Goodstack-io-Task-19e4591eff298001bc71c4d32d4875de
+Below are the details of a task that I was asked to carry out and complete within 2 hours. I've done this project using playwright and I've done a write-up for the task and the changes and my thinking here - https://achchu.notion.site/Goodstack-io-Task-19e4591eff298001bc71c4d32d4875de
 
 
 ---
