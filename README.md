@@ -1,4 +1,10 @@
-# Technical Task for SDETs
+## Note
+
+Below are the details of a task that I was asked to carry out. I've done this project using playwright and I've done a write up for the task and the changes and my thinking here - https://achchu.notion.site/Goodstack-io-Task-19e4591eff298001bc71c4d32d4875de
+
+
+---
+## Technical Task for SDETs
 
 ## Introduction
 Hello! Thank you so much for taking the time to dive into this exercise.
@@ -8,35 +14,6 @@ In this repository, you'll find all the code necessary to complete the associate
 If you have any questions about the exercises or need more information, please don't hesitate to contact us—we'll get back to you as soon as possible.
 
 Once you are done, you can share your changes with us via email using a ZIP file or create a repository in Github and share the link with us.
-
-## Prerequisites
-Before you get started, ensure you have the following:
-- **Node.js v18** and **npm** installed on your machine. [Installation Guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- Basic familiarity with **Playwright** and **GitHub Actions** is recommended.
-
-## Setup and Running Instructions
-1. Clone this repository to your local machine.
-2. Run the following commands in your terminal:
-
-   ```bash
-   npm install
-   npx playwright install
-   ```
-
-3. To run the tests, execute:
-
-   ```bash
-   npm run test:goodstack
-   ```
-
-For more details, you can check out the [Playwright Documentation](https://playwright.dev/).
-
-## Submission Guidelines
-- **Commit your changes** as you complete each exercise.
-- Once you're done, **push your changes** to your forked repository.
-- Let us know when you've completed the exercises. We'd appreciate it if you could notify us **at least 2 days before your next catch-up** with our team so we have time to review your work.
-
----
 
 ## Exercises
 
@@ -76,15 +53,4 @@ Feeling adventurous? Here’s your final challenge:
 
 Our current GitHub Actions workflow runs tests **natively** within the GitHub agent. We would love for you to **configure the workflow to execute the tests inside a Docker container** instead.
 
-- You can create your own Dockerfile or use Playwright base image. 
-- Remember to commit the modified workflows.
-- If you have questions about setup or dependencies, feel free to reach out.
-
 ---
-
-## Closing Thoughts
-Thank you again for dedicating your time to this exercise. We’re really looking forward to meeting you and discussing your work!
-
-Remember to **commit and push your changes** once you're finished, and notify us so we can review your work. Again, we’d appreciate hearing from you **at least 2 days before our next meeting** to give us time to review everything thoroughly.
-
-Good luck, and most importantly—have fun!
